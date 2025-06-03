@@ -121,6 +121,94 @@ To access the value stored in the variable which the pointer points to.
 
 ![pointers.png](images\pointers.png)
 
+# Type in Go
+- The `type` keyword is used to **define a new data type** or **give a name to an existing type** in Go. <br>
+
+- The `type` keyword is used to:
+    > Define your own data types <br>
+      Create types based on existing ones (like, int, string, bool, float64 etc) <br>
+      Group fields together (using struct) <br>
+      Describe behavior (using interface) <br>
+
+```
+> Built in type (eg. int)
+var age int
+
+> Custom type based on a built-in type
+type Age int    // Defining a new type Age based on int
+var a Age = 25
+
+> struct type
+type Person struct {
+    Name string
+    Age  int
+}
+// This defines a new data type Person, made of two fields.
+```
+
+# Struct in Go
+- A `struct` is a composite data type that groups together variables (fields) under a single name
+- A **struct is a collection of fields** and these fields are accessed using a dot
+- Variables inside the type if starts with uppercase letter, are visible and accessible outside the package
+- Every variable has a **default value** (also known as the **zero value**) if not explicitly initialized
+
+```
+> Structure for User type
+
+type User struct {
+	FirstName   string    `json:"firstName,omitempty,bson:"name,omitempty"`
+	LastName    string    `json:"lastName"`
+	PhoneNumber string    `json:"phoneNumber"`
+	Age         int       `json:"age,omitempty"` 
+	BirthDate   time.Time `json:"birthDate"` // time.Time is a built-in type in Go for handling date and time
+}
+
+// The struct tags (e.g., json:"statusCode" or bson:"statusCode,omitempty") are used to control how the struct fields are serialized to JSON or other formats.
+	
+// Using json:"statusCode" tag specify how the field will be named when the struct is converted to JSON. For example, StatusCode will appear as statusCode in the JSON output.
+	
+// Using bson:"statusCode,omitempty" tag specify how the field will be named when the struct is converted to BSON (Binary JSON, used in MongoDB). The omitempty option means that if the field has a zero value (like an empty string or zero integer), it will be omitted from the BSON output.
+	
+// Using omitempty tags allows omitting the field from JSON if it has a zero value.
+```
+
+# Interface in Go
+- An `interface` is a type that specifies a contract or a set of method signatures (i.e. behaviours)
+- If a type implements all the methods in the interface, it satisfies that interface — automatically, without explicitly declaring it.
+
+```
+type Speaker interface {
+    Speak() string
+}
+
+// A struct type
+type Dog struct{}
+
+func (d Dog) Speak() string {
+    return "Woof!"
+}
+
+type Cat struct{}
+
+func (c Cat) Speak() string {
+    return "Meow!"
+}
+
+func makeItSpeak(s Speaker) {
+    fmt.Println(s.Speak())
+}
+
+func main() {
+    d := Dog{}
+    c := Cat{}
+    makeItSpeak(d) // Output: Woof!
+    makeItSpeak(c) // Output: Meow!
+}
+```
+Key Points:
+- Dog and Cat types both implement the Speaker interface by providing a Speak method and therefore both `Dog` and `Cat` are considered as `Speaker`
+- No need to write implements Speaker - it's automatic in Go (Implicit interface implementation)
+
 # Data Types & their default values (also known as, Zero values)
 
 | **Type**              | **Default Value** | **Explanation**                                |
