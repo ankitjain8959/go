@@ -163,13 +163,13 @@ type User struct {
 	BirthDate   time.Time `json:"birthDate"` // time.Time is a built-in type in Go for handling date and time
 }
 
-// The struct tags (e.g., json:"statusCode" or bson:"statusCode,omitempty") are used to control how the struct fields are serialized to JSON or other formats.
+// The struct tags (e.g., json or bson etc) are used to control how the struct fields are serialized/deserialized to.
 	
-// Using json:"statusCode" tag specify how the field will be named when the struct is converted to JSON. For example, StatusCode will appear as statusCode in the JSON output.
+// Using json tag specify how the field will be named when the struct is converted to JSON. For example, StatusCode will appear as statusCode in the JSON output.
 	
-// Using bson:"statusCode,omitempty" tag specify how the field will be named when the struct is converted to BSON (Binary JSON, used in MongoDB). The omitempty option means that if the field has a zero value (like an empty string or zero integer), it will be omitted from the BSON output.
+// Using bson tag specify how the field will be named when the struct is converted to BSON (Binary JSON, used in MongoDB).
 	
-// Using omitempty tags allows omitting the field from JSON if it has a zero value.
+// Using omitempty option allows omitting the field from JSON/BSON etc if it has aan empty value (defined as false, 0, nil pointer, nil interface value & any array, slice, map, or string of length zero.)
 ```
 
 # Interface in Go
@@ -242,12 +242,26 @@ Note:
 - Add missing dependencies to `go.mod` & `go.sum` (if you're importing packages in code but forgot to run go get)
 - Remove any unused module dependencies from `go.mod` and `go.sum` (if you've deleted code but leftover entries remain)
 
-3. Run code
+3. Remove object files from current module
+```
+go clean
+```
+- Removes object files and cached test results from the current module.
+- It does not affect the module cache (where dependencies are stored).
+
+4. Delete local cache of downloaded modules
+```
+go clean -modcache
+```
+- This command deletes your local Go module (dependencies) cache which is stored in the `$GOPATH/pkg/mod` directory.
+- It removes all downloaded dependencies, forcing Go to re-download them the next time you build or tidy. Useful if your cache is corrupted or you want to clear out old dependencies.
+
+5. Run code
 ```
 go run hello.go
 ```
 
-4. Test code
+6. Test code
 ```
 go test
 

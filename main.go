@@ -65,4 +65,10 @@ func main() {
 
 	basics.UnderstandMap()
 
+	basics.UnderstandDecisionStructures()
+
+	basics.UnderstandSlices()
+
+	basics.UnderstandLoops()
+
 }

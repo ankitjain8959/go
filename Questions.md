@@ -57,5 +57,5 @@ func passByValue(y *int) {
 }
 ```
 Note: <br>
-- When you pass a pointer to a function, you're passing a copy of the pointer (still pass-by-value) & the value of the pointer will remain unchanged outside the function.
+- When you pass a pointer to a function, you're passing a copy of the pointer (still pass-by-value) & the value of the pointer ( i.e. memory address) will remain unchanged.
 - But that pointer points to the original value, so the function can modify the original data using dereferencing.
