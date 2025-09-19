@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"go-documentation/basics"
+	"go-documentation/concurrency"
 
 	"log"
 )
@@ -70,5 +71,7 @@ func main() {
 	basics.UnderstandSlices()
 
 	basics.UnderstandLoops()
+
+	go concurrency.UnderstandGoroutines()
 
 }

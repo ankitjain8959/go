@@ -268,8 +268,6 @@ go test
 go test -v    // Increase verbosity of test output
 ```
 
-
-
 # Writing Test
 - Ending a file's name with `_test.go` tells the `go test` command that this file contains test functions.
 - The file ending with `_test.go` will be excluded from regular package builds `go build` but will be included when the `go test` command is run.
@@ -290,3 +288,100 @@ import "testing"
 
 func TestXxx(t *testing.T) {}
 ```
+
+# Anonymous function
+- A function without a name.
+- You define and use it inline — often to keep code concise or for short-lived operations.
+
+```
+func main() {
+    // Define and call immediately
+    func(msg string) {
+        fmt.Println(msg)
+    }("Hello from anonymous function")
+}
+```
+
+- You can assign an anonymous function to a variable (You can call it a `function literal`), allowing you to call it later.
+```
+add := func(x int, y int) int {
+    return x + y
+}
+```
+
+# Goroutine
+- A Goroutine is a lightweight thread managed by the Go runtime.
+- It enables **concurrent execution** or **simultaneous execution** or **asynchronous execution** of functions — allowing your program to **do more than one thing at a time**.
+- Every Go program starts with a **main Goroutine**, and if it exits, all others stop. So, use `time.Sleep()` or `Waitgroup` (more roubust approach) to allow time for other Goroutines to execute.
+
+## How to start a Goroutine?
+- Just prefix a **function/method call** with the `go keyword`
+```
+func functionName() {
+    // statements
+}
+
+// Using `go` to run as a Goroutine
+go functionName()        // Runs concurrently
+```
+
+- Goroutines allow functions to run asynchronously. When you prefix a function call with go, like `go myFunction()` this function runs concurrently — in the background — without blocking the rest of your program.
+- When you launch an anonymous function in a new goroutine using the go keyword, it's called an **anonymous goroutine**
+```
+go func(parameters) {
+    // function logic
+}(arguments)
+```
+
+# Channel
+- A channel is a technique which allows one goroutine to send data to another goroutine.
+- A channel is created using `chan` keyword.
+
+```
+var channel_name chan int
+```
+
+or, using make function and using a shorthand declaration (Like, maps)
+```
+channel_name := make(chan int)        // This creates a channel of type `int`
+```
+- The zero value of the channel is `nil`.
+- You can send values into channels from one goroutine and receive those values into another goroutine. <br>
+
+To send a value into a channel, use the `<-` operator
+```
+channel_name <- value
+```
+To receive a value from a channel, also use the `<-` operator
+```
+value := <-channel_name
+```
+
+- Close a channel using `close()` function, which indicates that no more values will be sent on that channel.
+```
+close(channel_name)
+```
+
+## Unbuffered vs Buffered Channels
+- Unbuffered channel <br>
+If a goroutine tries to send data on a channel, it will pause (block) until another goroutine is ready to receive that data. <br>
+Similary, if a goroutine tries to receive data from a channel, it will pause (block) until another goroutine sends data on that channel. This is known as unbuffered channel (and this is default behaviour of channels).
+```
+ch := make(chan int) // unbuffered
+```
+
+- Buffered channel <br>
+A buffered channel allows you to send multiple values without needing an immediate receiver. <br>
+You can specify the buffer size (or capacity) when creating the channel. <br>
+```
+ch := make(chan int, 5) // buffered channel with a capacity of 5 values or buffer size of 5
+```
+
+## Looping over a Channel
+- You can loop over a channel using the `for` range loop. <br>
+```
+for value := range channel_name {
+    // process value
+}
+```
+This loop ends when the channel is closed.
